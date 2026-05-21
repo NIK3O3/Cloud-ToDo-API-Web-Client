@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Example App Runner service for Cloud ToDo API using ECR image and Secrets Manager.
+
+Parameters:
+  ServiceName:
+    Type: String
+    Default: cloud-todo-api
+  ImageIdentifier:
+    Type: String
+    Description: ECR image URI, for example 123456789012.dkr.ecr.eu-central-1.amazonaws.com/cloud-todo-api:latest
+  ApiKeySecretArn:
+    Type: String
+  DatabaseUrlSecretArn:
+    Type: String
+  CorsOrigins:
+    Type: String
+    Description: Comma-separated CloudFront/custom domains.
+  AccessRoleArn:
+    Type: String
+    Description: App Runner ECR access role ARN.
+  InstanceRoleArn:
+    Type: String
+    Description: App Runner instance role ARN with Secrets Manager read permissions.
+
+Resources:
+  Service:
+    Type: AWS::AppRunner::Service
+    Properties:
+      ServiceName: !Ref ServiceName
+      InstanceConfiguration:
+        Cpu: "0.25 vCPU"
+        Memory: "0.5 GB"
+        InstanceRoleArn: !Ref InstanceRoleArn
+      SourceConfiguration:
+        AuthenticationConfiguration:
+          AccessRoleArn: !Ref AccessRoleArn
+        AutoDeploymentsEnabled: true
+        ImageRepository:
+          ImageIdentifier: !Ref ImageIdentifier
+          ImageRepositoryType: ECR
+          ImageConfiguration:
+            Port: "8000"
+            RuntimeEnvironmentVariables:
+              - Name: ENV
+                Value: prod
+              - Name: CORS_ORIGINS
+                Value: !Ref CorsOrigins
+              - Name: RUN_MIGRATIONS
+                Value: "true"
+              - Name: LOG_LEVEL
+                Value: INFO
+            RuntimeEnvironmentSecrets:
+              - Name: API_KEY
+                Value: !Ref ApiKeySecretArn
+              - Name: DATABASE_URL
+                Value: !Ref DatabaseUrlSecretArn
+
+Outputs:
+  ServiceUrl:
+    Value: !GetAtt Service.ServiceUrl

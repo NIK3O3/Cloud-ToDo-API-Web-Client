@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloud ToDo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Cloud ToDo MVP</p>
+          <h1>Задачі</h1>
+          <p>Web client для роботи з API по HTTPS.</p>
+        </div>
+        <div class="api-box">
+          <label for="apiBaseUrl">API URL</label>
+          <input id="apiBaseUrl" placeholder="https://api.example.com" />
+          <label for="apiKey">X-API-Key</label>
+          <input id="apiKey" placeholder="Ваш API key" type="password" />
+          <button id="saveConfigButton" type="button">Зберегти</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Додати задачу</h2>
+        <form id="taskForm" class="task-form">
+          <input id="title" minlength="3" maxlength="120" placeholder="Назва задачі" required />
+          <textarea id="description" maxlength="500" placeholder="Опис, необов’язково"></textarea>
+          <select id="priority">
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM" selected>MEDIUM</option>
+            <option value="HIGH">HIGH</option>
+          </select>
+          <input id="dueDate" type="date" />
+          <button type="submit">Додати</button>
+        </form>
+      </section>
+
+      <section class="panel filters">
+        <div>
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter">
+            <option value="">All</option>
+            <option value="NEW">NEW</option>
+            <option value="IN_PROGRESS">IN_PROGRESS</option>
+            <option value="DONE">DONE</option>
+          </select>
+        </div>
+        <div>
+          <label for="priorityFilter">Priority</label>
+          <select id="priorityFilter">
+            <option value="">All</option>
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="HIGH">HIGH</option>
+          </select>
+        </div>
+        <button id="refreshButton" type="button">Оновити</button>
+      </section>
+
+      <section class="panel">
+        <div class="section-header">
+          <h2>Список задач</h2>
+          <span id="totalCount">0</span>
+        </div>
+        <div id="message" class="message" role="status"></div>
+        <div id="taskList" class="task-list"></div>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>

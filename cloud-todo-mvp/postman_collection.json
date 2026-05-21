@@ -1,0 +1,70 @@
+{
+  "info": {
+    "name": "Cloud ToDo API MVP",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8000" },
+    { "key": "apiKey", "value": "dev-api-key" },
+    { "key": "taskId", "value": "" }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      { "key": "key", "value": "X-API-Key", "type": "string" },
+      { "key": "value", "value": "{{apiKey}}", "type": "string" },
+      { "key": "in", "value": "header", "type": "string" }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{baseUrl}}/health" }
+    },
+    {
+      "name": "Create Task",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Prepare MVP\",\n  \"description\": \"Ship API and frontend\",\n  \"priority\": \"HIGH\",\n  \"dueDate\": \"2026-06-01\"\n}"
+        },
+        "url": "{{baseUrl}}/api/tasks"
+      }
+    },
+    {
+      "name": "List Tasks",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/tasks?status=NEW&priority=HIGH&limit=20&offset=0" }
+    },
+    {
+      "name": "Get Task",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/tasks/{{taskId}}" }
+    },
+    {
+      "name": "Replace Task",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Prepare MVP v2\",\n  \"description\": \"Updated description\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"MEDIUM\",\n  \"dueDate\": null\n}"
+        },
+        "url": "{{baseUrl}}/api/tasks/{{taskId}}"
+      }
+    },
+    {
+      "name": "Patch Task",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"status\": \"DONE\"\n}" },
+        "url": "{{baseUrl}}/api/tasks/{{taskId}}"
+      }
+    },
+    {
+      "name": "Delete Task",
+      "request": { "method": "DELETE", "url": "{{baseUrl}}/api/tasks/{{taskId}}" }
+    }
+  ]
+}
